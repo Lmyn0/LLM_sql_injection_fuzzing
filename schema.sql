@@ -1,6 +1,6 @@
 CREATE DATABASE IF NOT EXISTS security_test;
 USE security_test;
-
+ 
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
