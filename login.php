@@ -2,7 +2,7 @@
 // 데이터베이스 연결 설정
 $host = 'localhost';
 $db_user = 'root';
-$db_pass = ''; // XAMPP 기본 비밀번호는 공백입니다.
+$db_pass = ''; // XAMPP 기본 비밀번호는 공백
 $db_name = 'security_test';
 
 $conn = new mysqli($host, $db_user, $db_pass, $db_name);
