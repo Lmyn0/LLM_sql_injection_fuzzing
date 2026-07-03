@@ -1,0 +1,10 @@
+{
+  "name": "login_fail",
+  "url": "http://localhost/fuzzing_test/login.php",
+  "method": "POST",
+  "data": {
+    "id": "wronguser",
+    "pw": "wrongpass"
+  },
+  "expected": "fail"
+}

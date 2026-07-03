@@ -1,0 +1,10 @@
+{
+  "name": "login_success",
+  "url": "http://localhost/fuzzing_test/login.php",
+  "method": "POST",
+  "data": {
+    "id": "admin",
+    "pw": "admin1234"
+  },
+  "expected": "success"
+}

