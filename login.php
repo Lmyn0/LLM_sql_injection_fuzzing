@@ -18,8 +18,10 @@ $user_pw = isset($_POST['pw']) ? $_POST['pw'] : 'bbb';
 // 논문 프롬프트와 동일한 SQL 구조
 $sql = "SELECT username, pw FROM users WHERE id='" . $user_id . "' AND pw='" . $user_pw . "'";
 
-$result = $conn->query($sql);
 $response = array();
+$response['debug_sql'] = $sql;
+
+$result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
     $response['status'] = 'success';

@@ -39,15 +39,40 @@ SQL:
 
     return mutate(input_text)
 
-def parse_output(output):
-    payloads = []
+def parse_output(output, trace):
+    var_map = {}
+    trace_payloads = []
 
     for line in output.splitlines():
-        if "=" in line:
-            payload = line.split("=", 1)[1].strip()
-            payloads.append(payload)
+        line = line.strip()
 
-    return payloads
+        if not line or "=" not in line:
+            continue
+
+        left, right = line.split("=", 1)
+        left = left.strip()
+        right = right.strip()
+
+        # 1. var_1, var_2 같은 후보 저장
+        if left.lower().startswith("var_"):
+            var_map[left] = right
+            continue
+
+        # 2. trace와 연결된 줄 찾기
+        if left.lower() == trace.lower():
+            if right in var_map:
+                trace_payloads.append(var_map[right])
+            else:
+                trace_payloads.append(right)
+
+    # 3. trace 매핑이 없으면 fallback: var 후보 전체 사용
+    if not trace_payloads:
+        trace_payloads = list(var_map.values())
+
+    return trace_payloads
+
+def build_final_sql(trace_sql, trace, payload):
+    return trace_sql.replace(trace, payload)
 
 def send_payload(payload):
     data = {
@@ -76,6 +101,17 @@ def main():
 
     print("\n[LLM OUTPUT]")
     print(llm_output)
+
+    payloads = parse_output(llm_output, trace)
+
+    print("\n[PAYLOADS]")
+    print(payloads)
+
+    for payload in payloads:
+        final_sql = build_final_sql(sql, trace, payload)
+
+        print("\n[FINAL SQL]")
+        print(final_sql)
 
 if __name__ == "__main__":
     main()
