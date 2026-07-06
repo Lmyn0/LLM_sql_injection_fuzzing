@@ -1,0 +1,7 @@
+
+# Generated results and logs
+results_and_logs/
+eval_result_*.jsonl
+fuzz_log.*
+fuzz_result_log.jsonl
+results_log.txt
