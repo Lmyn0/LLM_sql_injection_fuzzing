@@ -1,7 +1,9 @@
 import requests
+import json
 from mutator import mutate
 from fuzzer import fuzz_input
 from detector import detect
+from datetime import datetime
 
 URL = "http://localhost/fuzzing_test/login.php"
 
@@ -76,6 +78,40 @@ def parse_output(output, trace):
 def build_final_sql(trace_sql, trace, payload):
     return trace_sql.replace(trace, payload)
 
+def save_log(payload, original_sql, final_sql, detector_result, db_result=None, reason=""):
+    log_data = {
+        "time": datetime.now().isoformat(),
+        "payload": payload,
+        "original_sql": original_sql,
+        "final_sql": final_sql,
+        "detector_result": detector_result,
+        "db_result": db_result,
+        "reason": reason
+    }
+
+    with open("fuzz_result_log.jsonl", "a", encoding="utf-8") as f:
+        f.write(json.dumps(log_data, ensure_ascii=False) + "\n")
+
+def execute_payload(payload):
+    data = {
+        "id": payload,
+        "pw": "bbb"
+    }
+
+    response = requests.post(URL, data=data)
+    return response.text
+
+def is_db_error(response_text):
+    error_keywords = [
+        "Fatal error",
+        "mysqli_sql_exception",
+        "SQL syntax",
+        "You have an error in your SQL syntax",
+        "MariaDB"
+    ]
+
+    return any(keyword in response_text for keyword in error_keywords)
+
 def send_payload(payload):
     data = {
         "id": payload,
@@ -119,6 +155,39 @@ def main():
 
         print("[DETECTOR]") 
         print(decision)
+
+        normalized_decision = decision.strip().lower().replace(".","")
+
+        if normalized_decision == "true":
+            print("[LOG] Detector returned True. Logging without DBMS execution.")
+
+            save_log(
+                payload = payload,
+                original_sql = sql,
+                final_sql = final_sql,
+                detector__result = decision,
+                db_result = None,
+                reason = "Detector predicted SQL injection or meaningful SQL context change."
+            )
+        else:
+            print("[DBMS] Detector returned False. Execution payload through login.php...")
+
+            db_result = execute_payload(payload)
+
+            print("[DBMS RESULT]")
+            print(db_result)
+
+            if is_db_error(db_result):
+                print("[LOG] DBMS error detected. Logging result.")
+
+                save_log(
+                    payload = payload,
+                    original_sql = sql,
+                    final_sql = final_sql,
+                    detector_result = decision,
+                    db_result = db_result,
+                    reason = "DBMS error occurred during query execution."
+                )
 
 if __name__ == "__main__":
     main()
