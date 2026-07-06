@@ -4,10 +4,20 @@ def load_prompt():
     with open("prompts/detector_prompt.txt", "r", encoding="utf-8") as f:
         return f.read()
 
-def detect(input_text):
+def detect(original_sql, final_sql):
     prompt = load_prompt()
 
-    full_prompt = prompt + "\n\nINPUT:\n" + input_text
+    full_prompt = prompt + f"""
+
+Original SQL:
+{original_sql}
+
+Final SQL:
+{final_sql}
+
+Response format:
+True or False only.
+"""
 
     response = chat(
         model="llama3.2",
@@ -19,12 +29,4 @@ def detect(input_text):
         ]
     )
 
-    output = response["message"]["content"]
-    
-    try:
-        return json.loads(output)
-    except:
-        return {
-            "label": output,
-            "raw": True
-        }
+    return response["message"]["content"].strip()

@@ -1,6 +1,8 @@
 import requests
 from mutator import mutate
 from fuzzer import fuzz_input
+from detector import detect
+
 URL = "http://localhost/fuzzing_test/login.php"
 
 def get_sql_with_trace():
@@ -112,6 +114,11 @@ def main():
 
         print("\n[FINAL SQL]")
         print(final_sql)
+
+        decision = detect(sql, final_sql)
+
+        print("[DETECTOR]") 
+        print(decision)
 
 if __name__ == "__main__":
     main()
