@@ -7,7 +7,7 @@ from datetime import datetime
 
 URL = "http://localhost/fuzzing_test/login.php"
 
-TARGET_NAME = "login"
+TARGET_NAME = "login_safe"
 URL = f"http://localhost/fuzzing_test/{TARGET_NAME}.php"
 
 TARGET_PAYLOAD_COUNT = 20

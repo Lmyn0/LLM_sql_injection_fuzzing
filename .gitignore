@@ -219,3 +219,5 @@ __marimo__/
 .streamlit/secrets.toml
 eval_result_*.jsonl
 fuzz_result_log.jsonl
+eval_result_*.jsonl
+fuzz_result_log.jsonl
